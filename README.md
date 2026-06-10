@@ -1,4 +1,4 @@
-# PDF Chatbot
+# PDF-RAG-Assistant
 
 A Retrieval-Augmented Generation (RAG) chatbot that enables users to interact with PDF documents through natural language queries. The application combines semantic search with Google's Gemini model to provide accurate, context-aware answers based on the content of a PDF.
 
