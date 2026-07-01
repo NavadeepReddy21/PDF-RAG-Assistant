@@ -16,7 +16,7 @@ A Retrieval-Augmented Generation (RAG) chatbot that lets you upload a PDF
 and ask questions about it in natural language. Combines semantic search
 with Google's Gemini model for accurate, context-aware answers.
 
-🔗 **Live demo:** [huggingface.co/spaces/Navadeep-21/PDF-RAG-assistant](https://huggingface.co/spaces/Navadeep-21/PDF-RAG-assistant)
+🔗 **Live demo:** [huggingface.co/spaces/Navadeep-21/PDF-RAG-assistant]([https://huggingface.co/spaces/Navadeep-21/PDF-RAG-assistant](https://navadeep-21-pdf-rag-assistant.hf.space/))
 
 ## Features
 - Upload any PDF directly in the browser
