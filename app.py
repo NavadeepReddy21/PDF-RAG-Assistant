@@ -1,4 +1,5 @@
 import gradio as gr
+import spaces
 from src import config, document, embeddings, llm
 
 # Global state for vector store
@@ -16,6 +17,7 @@ def process_file(file_obj):
     except Exception as e:
         return f"Error processing PDF: {str(e)}"
 
+@spaces.GPU
 def answer_question(question, history):
     global db_state
     if not db_state:

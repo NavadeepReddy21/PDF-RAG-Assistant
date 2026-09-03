@@ -9,3 +9,4 @@ python-dotenv==1.0.1
 gradio==4.42.0
 sentence-transformers
 huggingface_hub<1.0.0
+spaces
