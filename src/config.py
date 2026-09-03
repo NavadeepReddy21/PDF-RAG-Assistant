@@ -8,7 +8,7 @@ GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 
 # Models
 EMBEDDING_MODEL = "models/gemini-embedding-2"
-CHAT_MODEL = "gemini-2.5-flash"
+CHAT_MODEL = "gemini-3.6-flash"
 
 # Chunking Configuration
 CHUNK_SIZE = 500
