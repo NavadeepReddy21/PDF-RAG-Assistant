@@ -3,8 +3,8 @@ title: PDF RAG Assistant
 emoji: 🚀
 colorFrom: blue
 colorTo: red
-sdk: streamlit
-sdk_version: "1.38.0"
+sdk: gradio
+sdk_version: "4.42.0"
 python_version: "3.10"
 app_file: app.py
 pinned: false
