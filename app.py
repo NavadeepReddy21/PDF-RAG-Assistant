@@ -27,11 +27,10 @@ st.markdown("""
             max-width: 900px;
         }
         
-        /* Glassmorphism Sidebar */
+        /* Sidebar */
         [data-testid="stSidebar"] {
-            background-color: rgba(30, 41, 59, 0.6) !important;
-            backdrop-filter: blur(10px) !important;
-            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: #f4fcfb !important;
+            border-right: 1px solid #e0f2f1;
         }
         
         /* Chat Input Styling */
@@ -42,18 +41,33 @@ st.markdown("""
         
         /* Custom Chat Bubbles */
         [data-testid="stChatMessage"] {
-            background-color: rgba(30, 41, 59, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            padding: 1rem;
+            border-radius: 18px;
+            padding: 1rem 1.2rem;
             margin-bottom: 1rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
         }
         
-        /* Assistant Bubble Glow */
+        /* Assistant Bubble (Light Grey) */
         [data-testid="stChatMessage"]:has([data-testid="stIconMaterial"][title="assistant"]) {
-            background: linear-gradient(145deg, rgba(123, 44, 191, 0.1) 0%, rgba(30, 41, 59, 0.4) 100%);
-            border: 1px solid rgba(123, 44, 191, 0.3);
+            background-color: #f1f3f4;
+            color: #333333;
+            border: none;
+            border-bottom-left-radius: 4px;
+            margin-right: 20%;
+        }
+
+        /* User Bubble (Teal) */
+        [data-testid="stChatMessage"]:has([data-testid="stIconMaterial"][title="user"]) {
+            background-color: #26a69a;
+            color: white !important;
+            border: none;
+            border-bottom-right-radius: 4px;
+            margin-left: 20%;
+        }
+        
+        /* Ensure user text is white */
+        [data-testid="stChatMessage"]:has([data-testid="stIconMaterial"][title="user"]) p {
+            color: white !important;
         }
     </style>
 """, unsafe_allow_html=True)
