@@ -8,8 +8,8 @@ def get_llm():
         google_api_key=config.GOOGLE_API_KEY
     )
 
-def answer_question(llm, retriever, question: str):
-    """Retrieves context and asks the LLM to answer."""
+def answer_question_stream(llm, retriever, question: str):
+    """Retrieves context and yields the LLM answer stream."""
     docs = retriever.invoke(question)
     context = "\n".join([doc.page_content for doc in docs])
 
@@ -22,5 +22,8 @@ def answer_question(llm, retriever, question: str):
     {question}
     """
     
-    result = llm.invoke(prompt)
-    return result.content, docs
+    def generate():
+        for chunk in llm.stream(prompt):
+            yield chunk.content
+            
+    return generate(), docs

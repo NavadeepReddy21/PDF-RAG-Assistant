@@ -45,10 +45,10 @@ if uploaded_file is not None:
             with st.spinner("Finding answer..."):
                 try:
                     # Answer Question
-                    answer, source_docs = llm.answer_question(chat_model, retriever, question)
+                    answer_stream, source_docs = llm.answer_question_stream(chat_model, retriever, question)
                     
                     st.markdown("### Answer")
-                    st.write(answer)
+                    st.write_stream(answer_stream)
                     
                     with st.expander("View Source Documents"):
                         for i, doc in enumerate(source_docs):
