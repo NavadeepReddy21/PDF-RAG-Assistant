@@ -15,12 +15,45 @@ st.markdown("""
         footer {visibility: hidden;}
         
         /* Modern aesthetic adjustments */
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap');
+        
+        html, body, [class*="css"]  {
+            font-family: 'Outfit', sans-serif;
+        }
+        
         .block-container {
             padding-top: 2rem;
-            padding-bottom: 2rem;
+            padding-bottom: 5rem;
+            max-width: 900px;
         }
+        
+        /* Glassmorphism Sidebar */
+        [data-testid="stSidebar"] {
+            background-color: rgba(30, 41, 59, 0.6) !important;
+            backdrop-filter: blur(10px) !important;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Chat Input Styling */
         .stChatInputContainer {
             padding-bottom: 2rem;
+            background-color: transparent !important;
+        }
+        
+        /* Custom Chat Bubbles */
+        [data-testid="stChatMessage"] {
+            background-color: rgba(30, 41, 59, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Assistant Bubble Glow */
+        [data-testid="stChatMessage"]:has([data-testid="stIconMaterial"][title="assistant"]) {
+            background: linear-gradient(145deg, rgba(123, 44, 191, 0.1) 0%, rgba(30, 41, 59, 0.4) 100%);
+            border: 1px solid rgba(123, 44, 191, 0.3);
         }
     </style>
 """, unsafe_allow_html=True)
