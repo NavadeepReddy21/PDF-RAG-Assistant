@@ -14,7 +14,7 @@ if not config.GOOGLE_API_KEY:
 uploaded_file = st.file_uploader("Upload a PDF file", type="pdf")
 
 if uploaded_file is not None:
-    if "db" not in st.session_state:
+    if "current_file" not in st.session_state or st.session_state.current_file != uploaded_file.name:
         with st.spinner("Processing PDF..."):
             with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp_file:
                 tmp_file.write(uploaded_file.getvalue())
@@ -28,6 +28,7 @@ if uploaded_file is not None:
                 db = embeddings.create_vector_store(chunks)
                 
                 st.session_state.db = db
+                st.session_state.current_file = uploaded_file.name
                 st.success(f"PDF processed successfully! (Loaded {len(documents)} pages, {len(chunks)} chunks)")
             except Exception as e:
                 st.error(f"Error processing PDF: {e}")

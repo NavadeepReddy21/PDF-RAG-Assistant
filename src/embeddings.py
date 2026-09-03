@@ -1,13 +1,11 @@
-from langchain_google_genai import GoogleGenerativeAIEmbeddings
+from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_community.vectorstores import Chroma
 from . import config
 
 def create_vector_store(chunks):
     """Creates a ChromaDB vector store from document chunks."""
-    embeddings = GoogleGenerativeAIEmbeddings(
-        model=config.EMBEDDING_MODEL, 
-        google_api_key=config.GOOGLE_API_KEY
-    )
+    # Using local embeddings to avoid Google API rate limits
+    embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
     
     db = Chroma.from_documents(chunks, embeddings)
     return db
