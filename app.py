@@ -18,6 +18,9 @@ def process_file(file_obj):
         return f"Error processing PDF: {str(e)}"
 
 @spaces.GPU
+def _dummy_gpu_function():
+    pass
+
 def answer_question(question, history):
     global db_state
     if not db_state:
