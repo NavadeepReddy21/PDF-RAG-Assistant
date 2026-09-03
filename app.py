@@ -1,47 +1,57 @@
 import os
-from dotenv import load_dotenv
-from langchain_community.document_loaders import PyPDFLoader
-from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_google_genai import GoogleGenerativeAIEmbeddings, ChatGoogleGenerativeAI
-from langchain_community.vectorstores import Chroma
+import tempfile
+import streamlit as st
 
-load_dotenv()
-apikey = os.getenv("GOOGLE_API_KEY")
+from src import config, document, embeddings, llm
 
-pdf_path = "sample.pdf"
-if not os.path.exists(pdf_path):
-    raise FileNotFoundError(
-        f"'{pdf_path}' not found in current directory. Please place a PDF named '{pdf_path}' in the project root directory: {os.getcwd()}"
-    )
+st.set_page_config(page_title="PDF RAG Assistant", page_icon="📄")
+st.title("📄 PDF RAG Assistant")
 
-documents = PyPDFLoader(pdf_path).load()
-print("Pages Loaded:", len(documents))
+if not config.GOOGLE_API_KEY:
+    st.warning("Google API Key not found. Please set GOOGLE_API_KEY in your environment or secrets.")
+    st.stop()
 
-splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
-chunks = splitter.split_documents(documents)
+uploaded_file = st.file_uploader("Upload a PDF file", type="pdf")
 
-embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001", google_api_key=apikey)
-db=Chroma.from_documents(chunks, embeddings)
-print("db created with", len(chunks), "chunks")
+if uploaded_file is not None:
+    if "db" not in st.session_state:
+        with st.spinner("Processing PDF..."):
+            with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp_file:
+                tmp_file.write(uploaded_file.getvalue())
+                pdf_path = tmp_file.name
 
-retriever=db.as_retriever(search_kwargs={"k": 3})
+            try:
+                # 1. Process Document
+                documents, chunks = document.process_pdf(pdf_path)
+                
+                # 2. Create Vector Store
+                db = embeddings.create_vector_store(chunks)
+                
+                st.session_state.db = db
+                st.success(f"PDF processed successfully! (Loaded {len(documents)} pages, {len(chunks)} chunks)")
+            except Exception as e:
+                st.error(f"Error processing PDF: {e}")
+            finally:
+                os.unlink(pdf_path)
 
-llm = ChatGoogleGenerativeAI(model="models/chat-bison-001", google_api_key=apikey)
+    if "db" in st.session_state:
+        retriever = embeddings.get_retriever(st.session_state.db)
+        chat_model = llm.get_llm()
 
-question=input("Ask a question: ")
-docs=retriever.invoke(question)
+        question = st.text_input("Ask a question about your PDF:")
 
-for doc in docs:
-    print("Document:", doc.page_content)
-
-context= ""
-for doc in docs:
-    context += doc.page_content + "\n"
-
-prompt=f"""You are a helpful assistant. Use the following context to answer the question.
-Context: {context}
-Question: {question}
-Answer:"""
-
-result=llm.invoke(prompt)
-print("Answer:", result)
+        if question:
+            with st.spinner("Finding answer..."):
+                try:
+                    # 3. Answer Question
+                    answer, source_docs = llm.answer_question(chat_model, retriever, question)
+                    
+                    st.markdown("### Answer")
+                    st.write(answer)
+                    
+                    with st.expander("View Source Documents"):
+                        for i, doc in enumerate(source_docs):
+                            st.markdown(f"**Chunk {i+1}:**")
+                            st.write(doc.page_content)
+                except Exception as e:
+                    st.error(f"Error answering question: {e}")
