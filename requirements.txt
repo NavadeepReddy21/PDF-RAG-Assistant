@@ -6,7 +6,6 @@ langchain-core==0.2.42
 chromadb==0.5.5
 pypdf==4.3.1
 python-dotenv==1.0.1
-gradio
+streamlit
 sentence-transformers
-huggingface_hub<1.0.0
-spaces
+huggingface_hub

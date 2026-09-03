@@ -1,14 +1,4 @@
----
-title: PDF RAG Assistant
-emoji: 🚀
-colorFrom: blue
-colorTo: red
-sdk: gradio
-sdk_version: "4.44.1"
-python_version: "3.10"
-app_file: app.py
-pinned: false
----
+
 # PDF-RAG-Assistant
 
 A Retrieval-Augmented Generation (RAG) chatbot that enables users to interact with PDF documents through natural language queries. The application combines semantic search with Google's Gemini model to provide accurate, context-aware answers based on the content of a PDF.
